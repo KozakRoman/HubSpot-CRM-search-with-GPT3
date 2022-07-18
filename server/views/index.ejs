@@ -1,0 +1,158 @@
+<!--This simple search page to http://localhost:5001/get-search-ai/us-central1/search -->
+<html>
+  <head>
+    <title>Search</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <h2>Search</h2>
+        </div>
+      </div>
+
+      <form class="row" action="" method="post" id="search-form">
+        <div class="col-md-6">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              name="search"
+              class="form-control"
+              id="search"
+              placeholder="Search..."
+            />
+            <label for="search">Search</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <button type="submit" class="btn btn-lg btn-dark">Submit</button>
+        </div>
+      </form>
+
+      <div class="row">
+        <div class="col-md-7">
+          <div class="accordion accordion-flush" id="SearchCode" hidden>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingOne">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseOne"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseOne"
+                >
+                  Search code
+                </button>
+              </h2>
+              <div
+                id="flush-collapseOne"
+                class="accordion-collapse collapse"
+                aria-labelledby="flush-headingOne"
+                data-bs-parent="#SearchCode"
+              >
+                <div class="accordion-body">None</div>
+              </div>
+            </div>
+          </div>
+          <div class="list-group" id="results"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.addEventListener("load", function () {
+        var search = document.getElementById("search-form");
+        search.addEventListener("submit", submitHandler);
+
+        function submitHandler(e) {
+          e.preventDefault();
+
+          var search_text = document.getElementById("search").value;
+          var url = "/api/v1/search";
+
+          //check for empty string
+          if (search_text == "") {
+            alert("Please enter a search term");
+            return;
+          }
+
+          var results = document.getElementById("results");
+          results.innerHTML = "Loading...";
+
+          fetch(url, {
+            method: "POST",
+            body: JSON.stringify({ search: search_text }),
+            headers: { "Content-Type": "application/json" }
+          })
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (data) {
+              console.log({ data });
+
+              const resultsData = data.response && data.response.results;
+
+              if (!resultsData) {
+                results.innerHTML = `<div class="list-group-item"><pre>${JSON.stringify(
+                  data,
+                  null,
+                  2
+                )}</pre></div>`;
+                return;
+              }
+
+              if (resultsData.length == 0) {
+                results.innerHTML = `<div class="list-group-item">Looking for ${data.ObjectCRM}<br>No results found</div>`;
+                return;
+              }
+
+              results.innerHTML = `<div class="list-group-item">Looking for ${data.ObjectCRM}<br>${resultsData.length} results found</div>`;
+              displayResults(resultsData, results);
+              showSearchParameters(data, document.getElementById("SearchCode"));
+            })
+            .catch(function (err) {
+              console.log(err);
+              var results = document.getElementById("results");
+              results.innerHTML = `<div class="list-group-item">${err}</div>`;
+            });
+
+          return false;
+        }
+
+        function displayResults(resultsData, resultsElm) {
+          for (var i = 0; i < resultsData.length; i++) {
+            var result = resultsData[i];
+            var div = document.createElement("div");
+            div.classList.add("list-group-item");
+            div.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+            resultsElm.appendChild(div);
+          }
+        }
+
+        function showSearchParameters(data, searchCodeElm) {
+          searchCodeElm.removeAttribute("hidden");
+          const pasteToElement = searchCodeElm.querySelector(".accordion-body");
+          pasteToElement.innerHTML = `
+    <pre>Query string: ${data.queryString}</pre>
+    <pre>CRM object: ${data.ObjectCRM}</pre>
+    <pre>HubSpot API url: ${data.url}</pre>
+    <pre>Search parameters: 
+    ${JSON.stringify(data.searchQuery, null, 2)}</pre>
+    `;
+        }
+      });
+    </script>
+  </body>
+</html>

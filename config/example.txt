@@ -1,0 +1,29 @@
+#Get all contacts from HubSpot company#{"contacts":{ "filterGroups":[{"filters": [{ "propertyName": "associations.company", "operator": "EQ", "value": "HubSpot"}]}]}}
+
+#Get all contacts from Microsoft company with name not equal Smith#{"contacts":{ "filterGroups":[{ "filters": [{ "propertyName": "associations.company", "operator": "EQ", "value": "Microsoft"},{"propertyName": "lastname","operator": "NEQ","value": "Smith"}]}]}}
+
+#get all contacts that has email#{"contacts":{ "filters": [{ "propertyName": "email", "operator": "HAS_PROPERTY"}]}}
+
+#Show company that has ticket 1254#{"companies":{ "filters": [{ "propertyName": "associations.ticket", "operator": "EQ", "value": "1254"}]}}
+
+#jkdfhgkd#{"error":"Request can't be recognized"}
+
+#Display contact that has submitted ticket 1254#{"contacts":{ "filters": [{ "propertyName": "associations.ticket", "operator": "EQ", "value": "1254"}]}}
+
+#ddasfa#{"error":"Request can't be recognized"}
+
+#Display contact that has submitted ticket 584#{"contacts":{ "filters": [{ "propertyName": "associations.ticket", "operator": "EQ", "value": "584"}]}}
+
+#contacts#{"contacts":{}}
+
+#Show all products with price more then 10#{"products":{ "filterGroups":[{"filters": [{ "propertyName": "price", "operator": "GT", "value": "10"}]}]}}
+
+#display all contacts with R in their first name#{"contacts":{ "filterGroups":[{"filters": [{"propertyName": "firstname", "operator": "CONTAINS_TOKEN", "value": "*R*" }]}]}}
+
+#How many contacts are there#{"contacts":{}}
+
+#test#{"error":"Request can't be recognized"}
+
+#show me all contacts without tickets#{ "contacts":{"filters": [{ "propertyName": "associations.ticket", "operator": "NOT_HAS_PROPERTY"}]}}
+
+#

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">Search log</h1>
+      <!-- Number of records -->
+
+      <div class="alert alert-info">
+        <p>
+          <strong>
+            <%= data.length %>
+          </strong>
+          records found.
+        </p>
+
+      <% for(var i=0; i < data.length; i++) { %>
+      <div class="card"  id="<%= data[i].id %>">
+        <div class="card-body">
+          <h5 class="card-title">Query: <%= data[i].queryString %></h5>
+          <p class="card-text">API:
+            https://api.hubapi.com/crm/v3/objects/<b><%= data[i].ObjectCRM
+            %></b>/search
+          </p>
+          <p class="card-text">Payload: <br>
+            <pre><%= data[i].searchQuery %></pre></p>
+        </div>
+      </div>
+      <% } %>
+      </div>
+    </div>
+  </body>
+</html>
