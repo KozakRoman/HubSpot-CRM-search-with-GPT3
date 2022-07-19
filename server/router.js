@@ -93,7 +93,6 @@ router.post("/api/v1/search", (request, response) => {
 
 router.get("/api/v1/settings", (request, response) => {
   const settings = getExample();
-  console.log(settings);
   response.render("settings", {
     settings
   });
@@ -101,7 +100,6 @@ router.get("/api/v1/settings", (request, response) => {
 
 router.post("/api/v1/settings", (request, response) => {
   const settings = request.body?.prompt || "";
-  console.log(settings);
   saveExample(settings);
   response.render("settings.ejs", {
     settings: settings

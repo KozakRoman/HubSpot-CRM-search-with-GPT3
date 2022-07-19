@@ -15,14 +15,14 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use("/", router);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5011;
 
 function startServer() {
   app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
-    console.log(`http://localhost:${PORT}/api/v1/log`);
-    console.log(`http://localhost:${PORT}/api/v1/settings`);
+    console.log(`Server started on port: ${PORT}\n`);
+    console.log(`Search: http://localhost:${PORT}`);
+    console.log(`Logs: http://localhost:${PORT}/api/v1/log`);
+    console.log(`Settings: http://localhost:${PORT}/api/v1/settings`);
   });
 }
 
