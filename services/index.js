@@ -70,7 +70,16 @@ function saveToSearchLog(saveData) {
   );
 }
 
+function getSearchLog() {
+  const searchLog = fs.readFileSync(
+    path.join(__dirname, "..", "data", "search.json"),
+    "utf8"
+  );
+  return JSON.parse(searchLog);
+}
+
 module.exports = {
   languageToJSON,
-  saveToSearchLog
+  saveToSearchLog,
+  getSearchLog
 };

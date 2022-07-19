@@ -4,7 +4,11 @@ const cors = require("cors");
 const path = require("path");
 const { hubApiKey } = require("../config/index");
 
-const { languageToJSON, saveToSearchLog } = require("../services/index");
+const {
+  languageToJSON,
+  saveToSearchLog,
+  getSearchLog
+} = require("../services/index");
 
 const app = express();
 
@@ -124,23 +128,10 @@ app.post("/api/v1/settings", (request, response) => {
 });
 
 app.get("/api/v1/log", (request, response) => {
-  db.collection("search")
-    .get()
-    .then(querySnapshot => {
-      const data = querySnapshot.docs.map(doc => {
-        return {
-          id: doc.id,
-          ...doc.data()
-        };
-      });
-      const reversedData = data.reverse();
-      response.render("requests", {
-        data: reversedData
-      });
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  const reversedData = getSearchLog().reverse();
+  response.render("requests", {
+    data: reversedData
+  });
 });
 
 app.get("/", (request, response) => {
