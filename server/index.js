@@ -21,6 +21,8 @@ function startServer() {
   app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
     console.log(`http://localhost:${PORT}`);
+    console.log(`http://localhost:${PORT}/api/v1/log`);
+    console.log(`http://localhost:${PORT}/api/v1/settings`);
   });
 }
 

@@ -5,7 +5,9 @@ const { hubApiKey } = require("../config/index");
 const {
   languageToJSON,
   saveToSearchLog,
-  getSearchLog
+  getSearchLog,
+  getExample,
+  saveExample
 } = require("../services/index");
 
 router.post("/api/v1/search", (request, response) => {
@@ -90,29 +92,20 @@ router.post("/api/v1/search", (request, response) => {
 });
 
 router.get("/api/v1/settings", (request, response) => {
-  db.collection("settings")
-    .doc("default")
-    .get()
-    .then(doc => {
-      const settings = doc.data() || {};
-      console.log(settings);
-      response.render("settings", {
-        settings
-      });
-    });
+  const settings = getExample();
+  console.log(settings);
+  response.render("settings", {
+    settings
+  });
 });
 
 router.post("/api/v1/settings", (request, response) => {
-  const settings = request.body;
+  const settings = request.body?.prompt || "";
   console.log(settings);
-  db.collection("settings")
-    .doc("default")
-    .set(settings, { merge: true })
-    .then(() => {
-      response.render("settings.ejs", {
-        settings: settings
-      });
-    });
+  saveExample(settings);
+  response.render("settings.ejs", {
+    settings: settings
+  });
 });
 
 router.get("/api/v1/log", (request, response) => {

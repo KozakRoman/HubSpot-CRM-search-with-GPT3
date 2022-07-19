@@ -78,8 +78,25 @@ function getSearchLog() {
   return JSON.parse(searchLog);
 }
 
+function getExample() {
+  const example = fs.readFileSync(
+    path.join(__dirname, "..", "config", "example.txt"),
+    "utf8"
+  );
+  return example;
+}
+
+function saveExample(example) {
+  fs.writeFileSync(
+    path.join(__dirname, "..", "config", "example.txt"),
+    example
+  );
+}
+
 module.exports = {
   languageToJSON,
   saveToSearchLog,
-  getSearchLog
+  getSearchLog,
+  getExample,
+  saveExample
 };
