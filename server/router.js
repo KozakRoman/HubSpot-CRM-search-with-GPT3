@@ -65,13 +65,14 @@ router.post("/api/v1/search", (request, response) => {
     }
 
     try {
-      responseData.url = `https://api.hubapi.com/crm/v3/objects/${ObjectCRM}/search`;
-      const url = `https://api.hubapi.com/crm/v3/objects/${ObjectCRM}/search?hapikey=${hubApiKey}`;
+      const url = `https://api.hubapi.com/crm/v3/objects/${ObjectCRM}/search`;
+      responseData.url = url;
       const { data, status } = await axios({
         method: "post",
         url,
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${hubApiKey}`
         },
         data: searchQuery
       });
